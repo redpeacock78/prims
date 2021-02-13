@@ -3,6 +3,8 @@ image: redpeacock78/exutils:latest
 job:
   script:
     - apk --update --no-cache add openssh git curl sed > /dev/null
+    - eval $(ssh-agent)
+    - ssh-add <(echo "${SSH_PRIVATE_KEY}")
     - git config --global user.name "prims_number"
     - git config --global user.email "prims_number@example.com"
     - git remote set-url --push origin git@"${CI_SERVER_HOST}":"${CI_PROJECT_PATH}".git

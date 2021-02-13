@@ -3,7 +3,7 @@ image: redpeacock78/exutils:latest
 job:
   script:
     - apk --update --no-cache add openssh git curl sed > /dev/null
-    - eval $(ssh-agent -s)
+    - eval $(ssh-agent)
     - ssh-add <(echo "${SSH_PRIVATE_KEY}")
     - git config --global user.name "prims_number"
     - git config --global user.email "prims_number@example.com"

@@ -1,0 +1,15 @@
+image: redpeacock78/exutils:latest
+
+job:
+  script:
+    - apk --update --no-cache add openssh git curl sed > /dev/null
+    - git config --global user.name "prims_number"
+    - git config --global user.email "prims_number@example.com"
+    - git remote set-url --push origin git@"${CI_SERVER_HOST}":"${CI_PROJECT_PATH}".git
+    - git checkout "${CI_COMMIT_REF_NAME}"
+    - git pull
+    - mkdir -p main
+    - prim -w 10000 >> main/prims.txt
+    - git add main/*
+    - ret=$(git status|sed -ne 's|.*\(clean\)|\1|p')
+    - '[[ -z "${ret}" ]] && git commit -m "[ci skip] Push by GitLab runner." && git -c core.sshCommand="ssh -oStrictHostKeyChecking=no" push'
